@@ -169,22 +169,66 @@
 
 import mongoose from "mongoose";
 
-// establish connection
+// ================== TODO-1: Establish Connection ==================
+const uri =
+  "mongodb+srv://stark:rrAA510@cluster0.ovfivhu.mongodb.net/test";
+
+mongoose
+  .connect(uri)
+  .then(() => console.log(" Connected to MongoDB via Mongoose"))
+  .catch((err) => console.error(" Connection Error:", err));
 
 
-// define schema
+// ================== TODO-2: Define Schema ==================
+const studentSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  major: String,
+});
+
+const Student = mongoose.model("Student", studentSchema);
 
 
-// create document
+// ================== TODO-3: Create Documents ==================
+async function createStudents() {
+  await Student.insertMany([
+    { name: "Ali", age: 21, major: "CS" },
+    { name: "Sara", age: 23, major: "SE" },
+  ]);
+  console.log("✅ Inserted");
+}
 
 
-// read document
+
+async function readStudents() {
+  const all = await Student.find();
+  console.log(" All Students:", all);
+}
 
 
-// update document
+
+async function updateStudent() {
+  await Student.updateOne({ name: "Ali" }, { age: 22 });
+  console.log("✅ Updated Ali");
+}
 
 
-// delete document
+
+async function deleteStudent() {
+  await Student.deleteOne({ name: "Sara" });
+  console.log("✅ Deleted Sara");
+}
+
+
+
+async function run() {
+   await createStudents();   // TODO-3
+  await readStudents();     // TODO-4
+ await updateStudent();    // TODO-5
+  await deleteStudent();    // TODO-6
+}
+
+run();
 
 
 
